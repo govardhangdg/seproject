@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SE mini project</title>
+</head>
+<body>
+    <h1>Welcome to the service!!!</h1>
+    <h4>The service is provided by: <h3 id="provider">{{provider}}</h3></h4>
+    <h4>The Smart contract is deployed at address <h3 id="smartContract">{{smartContract}}</h3></h4>
+    <h3>Enter the number of hours</h3>
+    <input type="text" id="hours">
+    <input type="button" value="Submit" id="Submit">
+    <h4>The service requested by the account: <h3 id="consumer"></h3></h4>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    {{!-- <script src="https://cdn.jsdelivr.net/npm/web3@1.0.0-beta.37/src/index.min.js"></script>  --}}
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js"></script>
+    <script>
+
+        let producer,consumer,smartContract,contract;
+        
+        let web3js = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
+        $('#Submit').click(() => {
+            let hours = $('#hours').val();
+            console.log(hours);
+            $.get('http://127.0.0.1:8000/abi',data => {
+                console.log(data);
+                let abi = JSON.parse(data);
+                contract = new web3js.eth.Contract(abi,smartContract);
+                contract.methods.startTracking(parseInt(hours)).send({from:consumer,value:parseInt(hours) * 5 * 1e18});
+            });
+            
+        });
+
+        
+        web3js.eth.getAccounts()
+            .then(acc => console.log(acc))
+            .catch(err => console.log('error in acc',err));
+
+        setTimeout(() => {
+            consumer = Object.assign({},window.ethereum).selectedAddress;
+            $('#consumer').text(consumer);
+            provider = $("#provider").text();
+            smartContract = $("#smartContract").text();
+        },1000);        
+       
+    
+    </script>
+</body>
+</html>

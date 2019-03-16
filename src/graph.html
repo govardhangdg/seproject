@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<hml lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
+    <script> 
+
+        let count = 0;
+        Plotly.plot('chart',[{
+            y:[],
+            type:'line'
+        }]);
+
+        const socket = io();
+        
+        socket.on('message',(data) => {
+            count++;
+            Plotly.extendTraces('chart',{y:[[data]]},[0]);
+            if(count > 40){
+                Plotly.relayout('chart',{
+                    xaxis:{
+                        range: [count-40,count]
+                    }
+                })
+            }
+        });
+
+    </script>
+</body>
+</html>
