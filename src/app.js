@@ -51,9 +51,11 @@ let service;
             service.events.trackingEvent({
                 filter : {active : true}
             },(err,event) => {
+                console.log('======================================');
                 console.log(err,event);
             }).on('data',(event) => {
-                console(event);
+                console.log('++++++++++++++++++++++++++++');
+                console.log(event);
             });
             // console.log('traaaaaaaaaaa',service.events.trackingEvent.toString());
     } catch(err){
