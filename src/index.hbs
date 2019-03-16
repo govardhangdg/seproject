@@ -22,7 +22,7 @@
 
         let producer,consumer,smartContract,contract;
         
-        let web3js = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
+        let web3js = new Web3(new Web3.providers.HttpProvider('ws://127.0.0.1:7545'));
         $('#Submit').click(() => {
             let hours = $('#hours').val();
             console.log(hours);
@@ -31,6 +31,9 @@
                 let abi = JSON.parse(data);
                 contract = new web3js.eth.Contract(abi,smartContract);
                 contract.methods.startTracking(parseInt(hours)).send({from:consumer,value:parseInt(hours) * 5 * 1e18});
+                setTimeout(()=>{
+                    contract.methods.stopTracking().send();
+                },parseInt(hours) * 3600 * 1000);
             });
             
         });

@@ -10,8 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ganache-cli": "^6.4.1",
+    "hbs": "^4.0.3",
+    "socket.io": "^2.2.0",
     "solc": "^0.4.25",
-    "web3": "^1.0.0-beta.26"
+    "web3": "^1.0.0-beta.37"
   }
 }

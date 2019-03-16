@@ -1,10 +1,19 @@
 const Web3 = require('web3');
-const ganache = require('ganache-cli');
-const web3 = new Web3(ganache.provider());
+const web3 = new Web3('http://127.0.0.1:7545');
 
-// console.log(web3);
+const {interface, bytecode} = require('../compile');
 
-web3.eth.getAccounts()
-    .then(ins => {
-        console.log(ins[0]);
-    });
+let service;
+
+(async () => {
+    accounts = await web3.eth.getAccounts();
+    try {
+        service = await new web3.eth.Contract(JSON.parse(interface))
+            .deploy({data : bytecode, arguments : []})
+            .send({from : accounts[0],gas : 1000000});
+        console.log(service);
+    } catch(err){
+        console.log(err);
+    }  
+})();
+

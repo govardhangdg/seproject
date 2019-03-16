@@ -5,7 +5,7 @@ const {fork} = require('child_process');
 const hbs = require('hbs');
 
 const Web3 = require('web3');
-const web3 = new Web3('http://127.0.0.1:7545');
+const web3 = new Web3('ws://127.0.0.1:7545');
 
 let provider,consumer;
 
@@ -48,6 +48,14 @@ let service;
         service = await new web3.eth.Contract(JSON.parse(interface))
             .deploy({data : bytecode, arguments : []})
             .send({from : accounts[0],gas : 1000000});
+            service.events.trackingEvent({
+                filter : {active : true}
+            },(err,event) => {
+                console.log(err,event);
+            }).on('data',(event) => {
+                console(event);
+            });
+            // console.log('traaaaaaaaaaa',service.events.trackingEvent.toString());
     } catch(err){
         console.log(err);
     }  
