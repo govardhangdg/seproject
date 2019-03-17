@@ -48,14 +48,18 @@ let service;
         service = await new web3.eth.Contract(JSON.parse(interface))
             .deploy({data : bytecode, arguments : []})
             .send({from : accounts[0],gas : 1000000});
+            
             service.events.trackingEvent({
                 filter : {active : true}
             },(err,event) => {
-                console.log('======================================');
-                console.log(err,event);
-            }).on('data',(event) => {
-                console.log('++++++++++++++++++++++++++++');
-                console.log(event);
+
+            }).on('data',async(event) => {
+                console.log('++++++++++++++++++++++++++++');                
+                let a = await web3.eth.getTransactionReceipt(event.transactionHash);
+                let time = (parseInt(event.returnValues.endTrackingTime) * 1000 - (new Date).getTime());
+                setTimeout(() => {
+                    service.methods.stopTracking().send({from : a.from , value : 0});
+                },time);
             });
             // console.log('traaaaaaaaaaa',service.events.trackingEvent.toString());
     } catch(err){
