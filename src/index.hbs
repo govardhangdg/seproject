@@ -32,10 +32,8 @@
                 contract = new web3js.eth.Contract(abi,smartContract);
                 contract.methods.startTracking(parseInt(hours))
                     .send({from : consumer,value : (parseInt(hours) * 5 * 1e18) });
+                console.log(parseInt(hours) * 5 * 1e18)
                 $("#consumer").append("<a href='http://127.0.0.1:8000/graph'> Track activity</a>");
-                //{{!-- setTimeout(()=>{
-                  //  contract.methods.stopTracking().send({from : consumer,value : 0});
-                //},parseInt(hours) * 3600 * 1000); --}}
             });
             
         });

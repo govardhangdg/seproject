@@ -1,12 +1,11 @@
-let moisture = 40;
+let moisture = 23;
 
 process.on('message', (data) => {
     moisture += data;
-})
+});
 
 setInterval(() => {
+    console.log(moisture);
     process.send(moisture);
-    // console.log(moisture);
-    // @TODO write to a file
     moisture -= 1;
-},1000);
+},4000);
