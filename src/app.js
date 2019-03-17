@@ -17,16 +17,8 @@ let provider,consumer;
     consumer = accounts[1];
 })();
 
-// io.on('connection',(socket) => {
+let sock;
 
-//     console.log('connected');
-
-    
-
-//     socket.on('disconnect',() => {
-//         console.log('client disconnected');
-//     })
-// });
 
 let pay = () => {
     setTimeout(async () => {
@@ -51,6 +43,18 @@ const server = http.Server(app);
 
 const io = require('socket.io')(server);
 
+io.on('connection',(socket) => {
+
+    console.log('connected');
+
+    sock = socket;
+
+    socket.on('disconnect',() => {
+        console.log('client disconnected');
+    })
+});
+
+
 const {interface, bytecode} = require('../compile');
 let service;
 let a;
@@ -72,9 +76,9 @@ let a;
                 sensor = fork('./sensor');
 
                 sensor.on('message',async(data) => {
-                    // if(socket){
-                    //     // socket.send(data);
-                    // }
+                    if(sock){
+                        sock.send(data);
+                    }
                     
                     if(data < 20){
                         await pay(); 
