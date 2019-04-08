@@ -29,7 +29,7 @@ contract Service {
         require(msg.value == 5 * _time * 1e18,"proper ether value not sent");
         provider.transfer(msg.value);
         tracking = true;
-        endTrackingTime = block.timestamp + _time * 3600;
+        endTrackingTime = block.timestamp + (_time * 3600);
         emit trackingEvent(tracking,endTrackingTime);
     }
     

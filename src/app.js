@@ -80,7 +80,7 @@ let a;
                         sock.send(data);
                     }
                     
-                    if(data < 20){
+                    if(data < 30){
                         await pay(); 
                         sensor.send(5);   
                         setTimeout(async() => {
